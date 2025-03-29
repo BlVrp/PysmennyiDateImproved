@@ -1,5 +1,8 @@
-﻿using Pysmennyi02.ViewModels;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -10,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Pysmennyi02
+namespace Pysmennyi02.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ResultView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ResultView : UserControl
     {
-        public MainWindow()
+        public ResultView()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
         }
     }
 }

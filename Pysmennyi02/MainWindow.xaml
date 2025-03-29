@@ -4,9 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Pysmennyi02"
+        xmlns:views="clr-namespace:Pysmennyi02.Views"
+        xmlns:utils="clr-namespace:Pysmennyi02.Utils"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
+        xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
+        Title="Person Info Demo" Height="700" Width="800">
+    <Window.Resources>
+        <utils:ScreenModeToVisibilityConverter x:Key="ScreenModeToVisibilityConverter"/>
+    </Window.Resources>
+    <Grid IsEnabled="{Binding ContentIsEnabled}">
+        <views:InputView DataContext="{Binding UserCreationViewModel}" 
+                           Visibility="{Binding DataContext.CurrentScreen, 
+                                        RelativeSource={RelativeSource AncestorType=Window},
+                                        Converter={StaticResource ScreenModeToVisibilityConverter}, 
+                                        ConverterParameter=InputScreen}" />
+        <views:ResultView DataContext="{Binding UserCreationViewModel}" 
+                           Visibility="{Binding DataContext.CurrentScreen, 
+                                        RelativeSource={RelativeSource AncestorType=Window},
+                                        Converter={StaticResource ScreenModeToVisibilityConverter}, 
+                                        ConverterParameter=ResultScreen}" />
+        <fa:ImageAwesome Icon="Refresh" Spin="True" Height="50" Width="50" Visibility="{Binding LoaderVisibility}"/>
     </Grid>
 </Window>
+
