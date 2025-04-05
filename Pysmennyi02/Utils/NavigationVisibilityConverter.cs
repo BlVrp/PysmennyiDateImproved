@@ -16,8 +16,8 @@ namespace Pysmennyi02.Utils
             if (value == null || parameter == null)
                 return Visibility.Collapsed;
 
-            string currentScreen = value.ToString();
-            string targetScreen = parameter.ToString();
+            string currentScreen = value?.ToString() ?? string.Empty;
+            string targetScreen = parameter?.ToString() ?? string.Empty;
 
             return string.Equals(currentScreen, targetScreen, StringComparison.InvariantCultureIgnoreCase)
                 ? Visibility.Visible

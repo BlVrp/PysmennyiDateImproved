@@ -1,10 +1,8 @@
-﻿using Pysmennyi02.Models.ZodiacSigns;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
+﻿using Pysmennyi02.Models.Exceptions;
+using Pysmennyi02.Models.ZodiacSigns;
+
+using System.Text.RegularExpressions;
+
 
 namespace Pysmennyi02.Models
 {
@@ -35,6 +33,10 @@ namespace Pysmennyi02.Models
         public Person(string name, string surname, string email, DateTime birthDate)
         {
             ValidateBirthDate(birthDate);
+            ValidateEmail(email);
+            ValidateName(name);
+            ValidateSurname(surname);
+
             _name = name;
             _surname = surname;
             _email = email;
@@ -55,12 +57,12 @@ namespace Pysmennyi02.Models
         {
         }
 
-        public void  ValidateBirthDate(DateTime birthDate)
+        private void  ValidateBirthDate(DateTime birthDate)
         {
             var now = DateTime.Now;
             if (birthDate > now)
             {
-                throw new ArgumentException("Birth date cannot be in the future");
+                throw new PersonNotBornException(birthDate, now);
             }
 
             int age = DateTime.Now.Year - birthDate.Year;
@@ -71,9 +73,45 @@ namespace Pysmennyi02.Models
 
             if (age > 135)
             {
-                throw new ArgumentException("The person being registered cannot be older than 135 years");
+                var closestValidBirthdate = now.AddYears(-135);
+                throw new PersonTooOldException(birthDate, closestValidBirthdate);
             }
         }
+
+        private void ValidateEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                throw new InvalidEmailException(email);
+            }
+
+            string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            bool match = Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);
+
+            if (!match)
+            {
+                throw new InvalidEmailException(email);
+            }
+
+        }
+
+        private void ValidateName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException("name cannot be empty");
+            }
+        }
+
+        private void ValidateSurname(string surname)
+        {
+            if (string.IsNullOrWhiteSpace(surname))
+            {
+                throw new ArgumentException("surname cannot be empty");
+            }
+        }
+
+
 
         private WesternZodiacSign GetWesternZodiacSign(DateTime birthDate)
         {
